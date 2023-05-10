@@ -1,5 +1,5 @@
 from Environment.env_reward_win_basic import Environment
-from Model.basic_small import Model
+from Model.basic_large import Model
 
 import torch as torch
 import pygame
@@ -11,9 +11,9 @@ load_model = True
 def main():
     env_size_x = 7
     env_size_y = 13
-    m = Model(env_size_x*env_size_y+11, 8, 0.9, 0, -0.00001)
-    if load_model: m.net.load_state_dict(torch.load("model_MBS.pt"))
-    env = Environment(env_size_x, env_size_y)
+    m = Model(env_size_x*env_size_y+11, 8, 0.9, 0, -0.00001, 0.4)
+    if load_model: m.net.load_state_dict(torch.load("model_RBL.pt"))
+    env = Environment(env_size_x, env_size_y, True)
 
     while True:
         while env.player == 1:

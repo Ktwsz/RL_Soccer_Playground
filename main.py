@@ -1,7 +1,7 @@
 from Environment.env_reward_win_conv import Environment
 from time import sleep
 import pygame
-env = Environment(7, 13)
+env = Environment(7, 13, True)
 
 #c = int(input())
 while True:
