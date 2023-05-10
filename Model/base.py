@@ -4,12 +4,13 @@ import torch.nn as nn
 
 class ModelBase(nn.Module):
 
-    def __init__(self, gamma, epsilon, epsilon_rate):
+    def __init__(self, gamma, epsilon, epsilon_rate, lamb):
         super(ModelBase, self).__init__()
 
         self.gamma = gamma
         self.epsilon = epsilon
         self.epsilon_rate = epsilon_rate
+        self.lamb = lamb
         self.clear_batch()
 
         self.loss_fn = nn.MSELoss()
