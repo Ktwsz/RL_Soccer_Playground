@@ -2,14 +2,16 @@ import pygame
 from copy import copy
 
 class EnvironmentBase(object):
-    def __init__(self, width, height):
-        pygame.init()
+    def __init__(self, width, height, showcase):
+        self.showcase = showcase
 
         self.width = width
         self.height = height
 
-        self.screen = pygame.display.set_mode(((self.width-1)*50+20, (self.height-1)*50))
-        self.screen.fill((255,255,255))
+        if self.showcase: 
+            pygame.init()
+            self.screen = pygame.display.set_mode(((self.width-1)*50+20, (self.height-1)*50))
+            self.screen.fill((255,255,255))
         
         self.reset()
 
@@ -17,7 +19,7 @@ class EnvironmentBase(object):
 
         self.gate0 = [(self.pos[0], 0), (self.pos[0]-1, 0), (self.pos[0]+1, 0)]
         self.gate1 = [(self.pos[0], self.height-1), (self.pos[0]-1, self.height-1), (self.pos[0]+1, self.height-1)]
-        #print(self.gate0, self.gate1)
+
 
     def draw_env(self):
         for i in range(self.width):
@@ -38,7 +40,7 @@ class EnvironmentBase(object):
         self.old_pos = copy(self.pos)
         self.old_player = copy(self.player)
         if (self.visited[self.pos[0]][self.pos[1]] // (2**action)) % 2 == 1:
-            #print("from", self.pos[0], self.pos[1], self.visited[self.pos[0]][self.pos[1]])
+
             self.visited[self.pos[0]][self.pos[1]] -= 2**action
             match action:
                 case 0:
@@ -73,23 +75,49 @@ class EnvironmentBase(object):
             if self.old_pos[0] != self.pos[0] or self.old_pos[1] != self.pos[1]:
                 self.visited[self.pos[0]][self.pos[1]] -= 2**self.rev_action[action]
 
-            self.draw_line(self.old_pos)
+            self.old_vertices_visited = copy(self.vertices_visited[self.pos[0]][self.pos[1]])
+            
             if not self.vertices_visited[self.pos[0]][self.pos[1]]:
                 self.vertices_visited[self.pos[0]][self.pos[1]] = True
                 self.player = 1-self.player
-            #print("to", self.pos[0], self.pos[1], self.visited[self.pos[0]][self.pos[1]])
+            if self.showcase:
+                self.draw_line(self.old_pos)
             
     def reset(self):
         self.pos = [self.width//2, self.height//2]
 
-        self.screen.fill((255,255,255))
+        
 
         self.visited = [ [ 255 for i in range(self.height) ] for j in range(self.width) ]
         self.vertices_visited = [ [ False for i in range(self.height) ] for j in range(self.width) ]
         self.vertices_visited[self.pos[0]][self.pos[1]] = True
 
+        for i in range(self.width):
+
+            self.vertices_visited[i][0] = True
+            self.vertices_visited[i][-1] = True
+
+            self.visited[i][0] = 168
+            self.visited[i][-1] = 84
+
+        for i in range(self.height):
+
+            self.vertices_visited[0][i] = True
+            self.vertices_visited[-1][i] = True
+
+            self.visited[0][i] = 194
+            self.visited[-1][i] = 49
+
+        self.visited[0][0] = 128
+        self.visited[0][-1] = 64
+        self.visited[-1][0] = 32
+        self.visited[-1][-1] = 16
+
+
         self.player = 0      
         
         self.counter = 0
         
-        self.draw_env()
+        if self.showcase:
+            self.screen.fill((255,255,255))
+            self.draw_env()

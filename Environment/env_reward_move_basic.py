@@ -30,17 +30,23 @@ class Environment(EnvironmentBase):
                 reward = 100
             else:
                 reward = -100
+        elif self.vertices_visited[self.pos[0]][self.pos[1]]:
+            reward = 1
+            done = 0
         elif self.pos[0]-self.old_pos[0] > 0:
             if self.old_player == 0:
-                reward = 0
+                reward = -10
             else:
-                reward = 1
+                reward = 10
+            done = 0
+        elif self.pos[0]-self.old_pos < 0:
+            if self.old_player == 0:
+                reward = 10
+            else:
+                reward = -10
             done = 0
         else:
-            if self.old_player == 0:
-                reward = 1
-            else:
-                reward = 0
+            reward = -1
             done = 0
 
         return reward, self.get_state(), done

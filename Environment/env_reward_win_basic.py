@@ -14,14 +14,17 @@ class Environment(EnvironmentBase):
             if x == self.pos[0] and y == self.pos[1]:
                 flag1 = True
                 break
-
-        if self.visited[self.pos[0]][self.pos[1]] == 0:
+        
+        if self.pos == self.old_pos:
+            done = 0
+            reward = -100
+        elif self.visited[self.pos[0]][self.pos[1]] == 0:
             done = 1
-            reward = -1
+            reward = -100
         elif flag0:
             done = 1
             if self.old_player == 0:
-                reward = -1
+                reward = 0
             else:
                 reward = 1
         elif flag1:
@@ -29,7 +32,7 @@ class Environment(EnvironmentBase):
             if self.old_player == 0:
                 reward = 1
             else:
-                reward = -1
+                reward = 0
         else:
             done = 0
             reward = 0
