@@ -1,12 +1,12 @@
-from Environment.env_reward_move_large import Environment
-from Model.big_input_large import Model
+from env_reward_move_large import Environment
+from big_input_large import Model
 
 import torch.optim as optim
 import torch as torch
 
 from time import sleep
 
-load_model = False
+load_model = True
 
 def main():
     env_size_x = 7
@@ -19,7 +19,7 @@ def main():
 
     loss_avg = 0
 
-    for epoch in range(1000000):
+    for epoch in range(100000):
         done = False
         while not done:
             
@@ -34,7 +34,7 @@ def main():
             print(f"Epoch {epoch}, average loss is {loss_avg/1000}")
             loss_avg = 0
 
-    torch.save(m.net.state_dict(), "model_MLL.pt")
+            torch.save(m.net.state_dict(), "model_MLL.pt")
     
 
 if __name__ == '__main__':

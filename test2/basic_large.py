@@ -1,4 +1,4 @@
-from Model.base_lambda import ModelBase
+from base_lambda import ModelBase
 
 import numpy as np
 import torch
