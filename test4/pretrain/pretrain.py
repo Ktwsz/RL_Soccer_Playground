@@ -4,8 +4,6 @@ from pt_model import Model
 import torch.optim as optim
 import torch as torch
 
-from time import sleep
-
 load_model = True
 
 def main():
@@ -20,10 +18,10 @@ def main():
     loss_avg = 0
 
     for epoch in range(100000):
-        for t in range(100):
+        done = False
+        while not done:
             
-            m.policy(env)
-            #sleep(1)
+            done = m.policy(env)
         
         loss = m.train(optimizer)
         loss_avg += loss

@@ -42,17 +42,23 @@ class Model(nn.Module):
 
 
     def policy(self, env, debug=False):
-        state = env.get_state()
+        state, state_target = env.get_state()
         state_sampled = torch.from_numpy(np.array(state).astype(np.float32))
         
         actions = self.net(state_sampled)
         
-        if debug: print(actions)
+        if debug: 
+            print(actions)
+            return False
 
-        if not debug:
-            action = int(np.random.uniform()*(actions.size(dim=0)))
-            state_target = env.action(action)
-            self.add_experience(state, state_target)
+        correct_actions = []
+        for i in range(len(state_target)):
+            if state_target[i] != -100:
+                correct_actions.append(i)
+        action = correct_actions[int(np.random.uniform()*len(correct_actions))]
+        done = env.action(action)
+        self.add_experience(state, state_target)
+        return done
 
     def add_experience(self, state, state_target):
         self.batch['states'].append(state)
