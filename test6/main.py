@@ -4,9 +4,7 @@ from model_big import Model
 import torch.optim as optim
 import torch as torch
 
-from time import sleep
-
-load_model = False
+load_model = True
 
 def main():
     env_size_x = 7
@@ -24,7 +22,6 @@ def main():
         while not done:
             
             done = m.policy(env)
-            #sleep(1)
         
         loss = m.train(optimizer)
         loss_avg += loss
