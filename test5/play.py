@@ -9,7 +9,7 @@ load_model = True
 def main():
     env_size_x = 7
     env_size_y = 13
-    m = Model(env_size_x*env_size_y*2+9, 8, 0.9, 0.9, -0.000001)
+    m = Model(env_size_x*env_size_y*2+9, 8, 0.9, 0, -0.000001)
     m.net.load_state_dict(torch.load("model.pt"))
     env = Environment(env_size_x, env_size_y, True)
 
